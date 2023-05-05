@@ -1,4 +1,3 @@
 steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['compute', 'ssh', 'instance-1', '--zone=northamerica-northeast1-a','--command=/bin/sh /home/nikhil_lakshmisha/pull.sh']
-
