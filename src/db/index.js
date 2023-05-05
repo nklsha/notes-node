@@ -1,11 +1,15 @@
 const { Pool } = require('pg')
- 
+
+if (process.env.NODE_ENV !== 'prod') { 
+  require('dotenv').config({path: `.env.dev`}); 
+} 
+
 const pool = new Pool({
-    user: 'postgres',
-    host: '34.152.18.170',
-    database: 'postgres',
-    password: 'nikhil11!',
-    port: 5432,
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.DB,
+    password: process.env.POSTGRES_PWD,
+    port: parseInt(process.env.POSTGRES_PORT),
   })
  
 module.exports = {
