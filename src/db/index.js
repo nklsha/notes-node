@@ -1,7 +1,7 @@
-const { Pool } = require('pg')
+const { Pool } = require("pg");
 
-if (process.env.NODE_ENV !== 'prod') { 
-  require('dotenv').config({path: `.env.dev`}); 
+if (process.env.NODE_ENV !== "prod") { 
+  require("dotenv").config({path: ".env.dev"}); 
 } 
 
 const pool = new Pool({
@@ -10,8 +10,8 @@ const pool = new Pool({
     database: process.env.DB,
     password: process.env.POSTGRES_PWD,
     port: parseInt(process.env.POSTGRES_PORT),
-  })
+  });
  
 module.exports = {
   query: (text, params) => pool.query(text, params).catch(e => e.stack)
-}
+};
