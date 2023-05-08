@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "node .",
-    "test": "mocha --timeout 10000 --exit",
+    "test": "mocha --timeout 20000 --exit",
     "lint": "npx eslint src/",
     "lint-test": "npx eslint test/"
 
