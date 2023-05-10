@@ -3,9 +3,10 @@ let chaiHttp = require("chai-http");
 let server = require("../src/server.js");
 
 let should = chai.should();
+
 chai.use(chaiHttp);
 
-describe("/GET notes", () => {
+describe("/GET all notes", () => {
     it("it should GET all the notes", (done) => {
         chai.request(server)
             .get("/note")
@@ -23,28 +24,68 @@ describe("/GET notes", () => {
     });
 });
 
-describe("/POST notes", () => {
-    it("it should POST a new note", (done) => {
-        let note = {
-            title: "Some title",
-            description: "Some description"
-        };
+describe("POST/GET/UPDATE/DELETE a note", () => {
+    var addedNote;
+    it("it should POST a new note", async () => {
 
-        chai.request(server)
+        const res1 = await chai.request(server)
             .post("/note")
-            .send(note)
-            .end((err, res) => {
-                res.body.should.have.property("data");
-                res.body.should.have.property("status");
-                res.should.have.status(200);
-
-                const data = res.body.data;
-                data.should.be.a("object");
-                data.should.have.property("title").eql("Some title");
-                data.should.have.property("description").eql("Some description");
-                data.should.have.property("id");
-
-                done();
+            .send({
+                title: "Some title",
+                description: "Some description"
             });
+
+        chai.expect(res1.body).to.have.property("data");
+        chai.expect(res1.body).to.have.property("status");
+        chai.expect(res1.body).have.status(200);
+
+        addedNote = res1.body.data;
+        chai.expect(addedNote).to.be.a("object")
+
+        chai.expect(addedNote).to.have.property("title").eql("Some title");
+        chai.expect(addedNote).to.have.property("description").eql("Some description");
+        chai.expect(addedNote).to.have.property("id")
+    });
+
+
+    it("it should get added Note GET/:id", async () => {
+        const res2 = await chai.request(server)
+            .get("/note/" + addedNote.id);
+
+        chai.expect(res2.body).to.have.property("data");
+        chai.expect(res2.body).to.have.property("status");
+        chai.expect(res2.body).have.status(200);
+
+        chai.expect(res2.body.data).to.be.a("array")
+        chai.expect(res2.body.data[0]).to.have.property("title").eql(addedNote.title);
+        chai.expect(res2.body.data[0]).to.have.property("description").eql(addedNote.description);
+        chai.expect(res2.body.data[0]).to.have.property("id").eql(addedNote.id)
+    });
+
+    it("it should update added Note PUT/:id", async () => {
+        const res2 = await chai.request(server)
+            .put("/note/" + addedNote.id)
+            .send({title: "Updated title", description:"Updated description"});
+
+        chai.expect(res2.body).to.have.property("data");
+        chai.expect(res2.body).to.have.property("status");
+        chai.expect(res2.body).have.status(200);
+
+        chai.expect(res2.body.data).to.be.a("object")
+        chai.expect(res2.body.data).to.have.property("title").eql("Updated title");
+        chai.expect(res2.body.data).to.have.property("description").eql("Updated description");
+        chai.expect(res2.body.data).to.have.property("id").eql(addedNote.id)
+    });
+
+    it("it should update added Note DELETE/:id", async () => {
+        const res2 = await chai.request(server)
+            .delete("/note/" + addedNote.id);
+
+        chai.expect(res2.body).to.have.property("data");
+        chai.expect(res2.body).to.have.property("status");
+        chai.expect(res2.body).have.status(200);
+
+        chai.expect(res2.body.data).to.be.a("object")
+        chai.expect(res2.body.data).to.have.property("id").eql(addedNote.id)
     });
 });
