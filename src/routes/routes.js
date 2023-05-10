@@ -2,33 +2,53 @@
 const queries = require("../db/queries.js");
 
 async function getAllNotes(req, res) {
-  const rows = await queries.getAllNotes().catch(err => formResponse(res, null, err));
-  console.log("rows", rows);
-  formResponse(res, rows);
+  try {
+    const rows = await queries.getAllNotes();
+    console.log("rows", rows);
+    formResponse(res, rows);
+  } catch (err) {
+    formResponse(res, null, err);
+  }
 }
 
 async function getNote(req, res) {
-  const rows = await queries.getNote(req.params.id).catch(err => formResponse(res, null, err));
-  console.log("rows", rows);
-  formResponse(res, rows);
+  try {
+    const rows = await queries.getNote(req.params.id);
+    console.log("rows", rows);
+    formResponse(res, rows);
+  }  catch (err) {
+    formResponse(res, null, err);
+  }
 }
 
 async function updateNote(req, res) {
-  const row = await queries.updateNode({...req.body, ...req.params}).catch(err => formResponse(res, null, err));
-  console.log("rows", row);
-  formResponse(res, row, null);
+  try {
+    const rows = await queries.updateNode({ ...req.body, ...req.params });
+    console.log("rows", rows);
+    formResponse(res, rows);
+  }  catch (err) {
+    formResponse(res, null, err);
+  }
 }
 
 async function addNote(req, res) {
-  const row = await queries.addNote(req.body).catch(err => formResponse(res, null, err));
-  console.log("rows", row);
-  formResponse(res, row, null);
+  try {
+    const rows = await queries.addNote(req.body);
+    console.log("rows", rows);
+    formResponse(res, rows);
+  }  catch (err) {
+    formResponse(res, null, err);
+  }
 }
 
 async function removeNote(req, res) {
-  const row = await queries.removeNote(req.params.id).catch(err => formResponse(res, null, err));
-  console.log("rows", row);
-  formResponse(res, row, null);
+  try {
+    const rows = await queries.removeNote(req.params.id);
+    console.log("rows", rows);
+    formResponse(res, rows);
+  }  catch (err) {
+    formResponse(res, null, err);
+  }
 }
 
 

@@ -12,11 +12,7 @@ const pool = new Pool({
   port: parseInt(process.env.POSTGRES_PORT),
 });
 
-pool.connect((err, client, done) => {
-  if (err) throw err
-})
-
 module.exports = {
-  query: (text, params) => pool.query(text, params).catch(e => e.stack)
+  query: (text, params) => pool.query(text, params)
 };
 

@@ -23,28 +23,28 @@ describe("/GET notes", () => {
     });
 });
 
-// describe("/POST notes", () => {
-//     it("it should POST a new note", (done) => {
-//         let note = {
-//             title: "Some title",
-//             description: "Some description"
-//         };
+describe("/POST notes", () => {
+    it("it should POST a new note", (done) => {
+        let note = {
+            title: "Some title",
+            description: "Some description"
+        };
 
-//         chai.request(server)
-//             .post("/note")
-//             .send(note)
-//             .end((err, res) => {
-//                 res.body.should.have.property("data");
-//                 res.body.should.have.property("status");
-//                 res.should.have.status(200);
+        chai.request(server)
+            .post("/note")
+            .send(note)
+            .end((err, res) => {
+                res.body.should.have.property("data");
+                res.body.should.have.property("status");
+                res.should.have.status(200);
 
-//                 const data = res.body.data;
-//                 data.should.be.a("object");
-//                 data.should.have.property("title").eql("Some title");
-//                 data.should.have.property("description").eql("Some description");
-//                 data.should.have.property("id");
+                const data = res.body.data;
+                data.should.be.a("object");
+                data.should.have.property("title").eql("Some title");
+                data.should.have.property("description").eql("Some description");
+                data.should.have.property("id");
 
-//                 done();
-//             });
-//     });
-// });
+                done();
+            });
+    });
+});
