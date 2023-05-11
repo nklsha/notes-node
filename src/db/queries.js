@@ -2,13 +2,13 @@ const db = require("./index.js");
 
 
 async function getAllNotes() {
-    const { rows } = await db.query("SELECT * FROM notes;");
+    const { rows } = await db.query("SELECT * FROM note;");
     return rows;
 }
 
 async function getNote(id) {
     const query = {
-        text: "SELECT * FROM notes where id = $1;",
+        text: "SELECT * FROM note where id = $1;",
         values: [id],
       };
 
@@ -19,7 +19,7 @@ async function getNote(id) {
 async function addNote(note) {
 
     const query = {
-        text: "INSERT INTO notes(title, description) VALUES($1, $2) RETURNING *;",
+        text: "INSERT INTO note(title, description) VALUES($1, $2) RETURNING *;",
         values: [note.title, note.description],
       };
 
@@ -30,7 +30,7 @@ async function addNote(note) {
 async function removeNote(id) {
 
     const query = {
-        text: "DELETE FROM notes WHERE id = $1 RETURNING *;",
+        text: "DELETE FROM note WHERE id = $1 RETURNING *;",
         values: [id],
       };
 
@@ -41,7 +41,7 @@ async function removeNote(id) {
 async function updateNode({id, title, description}) {
 
     const query = {
-        text: "UPDATE notes SET title = $2, description = $3 WHERE id = $1 RETURNING *;",
+        text: "UPDATE note SET title = $2, description = $3 WHERE id = $1 RETURNING *;",
         values: [id, title, description],
       };
 
