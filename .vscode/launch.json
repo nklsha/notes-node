@@ -6,12 +6,13 @@
     "configurations": [
         {
             "type": "node",
+            "runtimeVersion": "18.16.0",
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/src/index.js"
+            "program": "${workspaceFolder}/src/server.js"
         }
     ]
 }

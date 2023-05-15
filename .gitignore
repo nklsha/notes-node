@@ -45,6 +45,9 @@ jspm_packages/
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
+#Service account json for firebase
+serviceAccountKey.json
+
 # TypeScript cache
 *.tsbuildinfo
 
@@ -128,3 +131,4 @@ dist
 .pnp.*
 
 .DS_Store
+

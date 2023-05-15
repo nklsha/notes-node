@@ -16,16 +16,17 @@ model note {
   is_active    Boolean  @default(true)
   date_created DateTime @default(now()) @db.Timestamp(6)
   id           String   @id(map: "note_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  users        user     @relation(fields: [userId], references: [id])
   userId       String   @db.Uuid
+  users        profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model user {
-  name          String    @db.VarChar
-  email         String    @db.VarChar
-  id            String    @id(map: "user_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  notes         note[]
-  date_updated  DateTime  @default(now()) @db.Timestamp(6)
-  is_active     Boolean   @default(true)
-  date_created  DateTime  @default(now()) @db.Timestamp(6)
+model profile {
+  name         String   @db.VarChar
+  email        String   @db.VarChar
+  id           String   @id(map: "user_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date_updated DateTime @default(now()) @db.Timestamp(6)
+  is_active    Boolean  @default(true)
+  date_created DateTime @default(now()) @db.Timestamp(6)
+  firebaseId   String   @unique(map: "user_firebaseId_key")
+  notes        note[]
 }
