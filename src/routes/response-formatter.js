@@ -4,8 +4,8 @@ function formResponse(res, data, err) {
         data: data
       });
     } else {
-      res.status(err.status || 500).send({
-        error: err.message || "Server error"
+      res.status(err.status ?? 500).send({
+        error: err.message ?? "Internal server error"
       });
     }
   }
