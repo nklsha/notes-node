@@ -15,6 +15,9 @@ describe("/GET all notes", () => {
             .get("/note")
             .set({ "authorization": `Bearer ${process.env.TESTING_USER_ACCESS_TOKEN}` })
             .end((err, res) => {
+                console.log("Error:", err)
+                console.log("Response:", res)
+
                 res.body.should.have.property("data");
 
                 const data = res.body.data;
