@@ -61,35 +61,40 @@ async function loginUser(req, res, firebase) {
   try {
 
     const decodedToken = await firebase.auth().verifyIdToken(idToken).catch((err) => {
-      throw {status: 400, message: "Invalid token"}
+      throw { status: 400, message: "Invalid token" }
     })
 
     const uid = decodedToken.uid;
     const email = decodedToken.email;
     const name = decodedToken.name;
     console.log(uid, email, name)
+    let responeBody = await checkAndInsertUser(uid, email, name)
 
-    var user = await queries.getUserFromFirebaseId(uid);
+    formResponse(res, responeBody)
 
-    if (!user) {
-      user = await queries.insertUser({
-        name: name, email: email, firebaseId: uid
-      });
-    }
-
-    if (!user) {
-      throw {status: 500, message: "Failed to add user"}
-    }
-
-
-    formResponse(res, {
-      ...user,
-      accessToken: tokenManager.generateAccessToken(user.id)
-    })
   } catch (error) {
-    // Handle error
     console.log(error);
     formResponse(res, null, error);
+  };
+}
+
+
+async function checkAndInsertUser(uid, email, name) {
+  var user = await queries.getUserFromFirebaseId(uid);
+
+  if (!user) {
+    user = await queries.insertUser({
+      name: name, email: email, firebaseId: uid
+    });
+  }
+
+  if (!user) {
+    throw { status: 500, message: "Failed to add user" }
+  }
+
+  return {
+    ...user,
+    accessToken: tokenManager.generateAccessToken(user.id)
   };
 }
 

@@ -15,10 +15,12 @@ async function authorizeToken(req, next) {
     try {
         let payload = tokenManager.verifyToken(token)
         console.log(payload)
+
         let user = await queries.getUser(payload.uid)
         if(!user.id) {
             throw Error()
         }
+
         next(payload.uid)
 
     } catch(err) {
