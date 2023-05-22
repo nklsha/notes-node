@@ -1,13 +1,13 @@
 
-const queries = require("../db/queries.js");
-const tokenManager = require("../middleware/token.js");
+const queries = require('../db/queries.js');
+const tokenManager = require('../middleware/token.js');
 
-const { authorizeToken } = require("../middleware/authorization.js");
-const { formResponse } = require("./response-formatter.js");
+const { authorizeToken } = require('../middleware/authorization.js');
+const { formResponse } = require('./response-formatter.js');
 
 async function autherizeRequest(req, res, authorizedAction) {
   try {
-    await authorizeToken(req, async (uid) => { onAuthorization(req, res, uid, authorizedAction) })
+    await authorizeToken(req, async (uid) => { onAuthorization(req, res, uid, authorizedAction); });
   } catch (err) {
     formResponse(res, null, err);
   }
@@ -15,15 +15,14 @@ async function autherizeRequest(req, res, authorizedAction) {
 
 async function onAuthorization(req, res, uid, authorizedAction) {
   try {
-    const payload = await authorizedAction(req, uid)
-    console.log("Payload", payload);
+    const payload = await authorizedAction(req, uid);
     if (payload) {
       formResponse(res, payload);
     } else {
       throw {
         status: 400,
-        message: "Bad request. Please check your input."
-      }
+        message: 'Bad request. Please check your input.'
+      };
     }
   } catch (err) {
     formResponse(res, null, err);
@@ -32,12 +31,12 @@ async function onAuthorization(req, res, uid, authorizedAction) {
 
 async function getAllNotes(req, uid) {
   const rows = await queries.getAllNotes(uid);
-  return rows
+  return rows;
 }
 
 async function getNote(req, uid) {
   const rows = await queries.getNote(req.params.id, uid);
-  return rows
+  return rows;
 
 }
 
@@ -48,39 +47,37 @@ async function updateNote(req, uid) {
 
 async function addNote(req, uid) {
   const rows = await queries.addNote(req.body, uid);
-  return rows
+  return rows;
 }
 
 async function removeNote(req, uid) {
   const rows = await queries.removeNote(req.params.id, uid);
-  return rows
+  return rows;
 }
 
 async function loginUser(req, res, firebase) {
   const idToken = req.body.idToken;
   try {
 
-    const decodedToken = await firebase.auth().verifyIdToken(idToken).catch((err) => {
-      throw { status: 400, message: "Invalid token" }
-    })
+    const decodedToken = await firebase.auth().verifyIdToken(idToken).catch((_) => {
+      throw { status: 400, message: 'Invalid token' };
+    });
 
     const uid = decodedToken.uid;
     const email = decodedToken.email;
     const name = decodedToken.name;
-    console.log(uid, email, name)
-    let responeBody = await checkAndInsertUser(uid, email, name)
+    const responeBody = await checkAndInsertUser(uid, email, name);
 
-    formResponse(res, responeBody)
+    formResponse(res, responeBody);
 
   } catch (error) {
-    console.log(error);
     formResponse(res, null, error);
-  };
+  }
 }
 
 
 async function checkAndInsertUser(uid, email, name) {
-  var user = await queries.getUserFromFirebaseId(uid);
+  let user = await queries.getUserFromFirebaseId(uid);
 
   if (!user) {
     user = await queries.insertUser({
@@ -89,7 +86,7 @@ async function checkAndInsertUser(uid, email, name) {
   }
 
   if (!user) {
-    throw { status: 500, message: "Failed to add user" }
+    throw { status: 500, message: 'Failed to add user' };
   }
 
   return {
@@ -97,8 +94,6 @@ async function checkAndInsertUser(uid, email, name) {
     accessToken: tokenManager.generateAccessToken(user.id)
   };
 }
-
-
 
 
 module.exports = {

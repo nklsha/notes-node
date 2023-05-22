@@ -1,10 +1,10 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
-const routes = require("./routes.js");
-const firebase = require("firebase-admin");
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const routes = require('./routes.js');
+const firebase = require('firebase-admin');
 
 
 firebase.initializeApp({
@@ -21,7 +21,7 @@ function initExpress() {
 
   app.use(cors());
 
-  app.use(morgan("combined"));
+  app.use(morgan('combined'));
 
   return app;
 }
@@ -29,32 +29,32 @@ function initExpress() {
 function setup() {
   const app = initExpress();
 
-  app.route("/note/:id")
+  app.route('/note/:id')
     .get((req, res) => {
-      routes.autherizeRequest(req, res, routes.getNote)
+      routes.autherizeRequest(req, res, routes.getNote);
     })
     .put((req, res) => {
-      routes.autherizeRequest(req, res, routes.updateNote)
+      routes.autherizeRequest(req, res, routes.updateNote);
     })
     .delete(
       (req, res) => {
-        routes.autherizeRequest(req, res, routes.removeNote)
+        routes.autherizeRequest(req, res, routes.removeNote);
       });
 
-  app.route("/note")
+  app.route('/note')
     .get(
       (req, res) => {
-        routes.autherizeRequest(req, res, routes.getAllNotes)
+        routes.autherizeRequest(req, res, routes.getAllNotes);
       })
     .post(
       (req, res) => {
-        routes.autherizeRequest(req, res, routes.addNote)
+        routes.autherizeRequest(req, res, routes.addNote);
       });
 
-  app.route("/login")
+  app.route('/login')
     .post((req, res) => {
-      routes.loginUser(req, res, firebase)
-    })
+      routes.loginUser(req, res, firebase);
+    });
   return app;
 }
 

@@ -1,8 +1,8 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 
 function generateAccessToken(uid) {
-  return jwt.sign({uid: uid}, process.env.TOKEN_SECRET, { expiresIn: "7d" });
+  return jwt.sign({uid: uid}, process.env.TOKEN_SECRET, { expiresIn: '7d' });
 }
 
 
