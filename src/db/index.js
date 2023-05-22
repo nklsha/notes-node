@@ -1,8 +1,4 @@
-const { Pool } = require("pg");
-
-if (process.env.NODE_ENV !== "prod") {
-  require("dotenv").config({ path: ".env.dev" });
-}
+const { Pool } = require('pg');
 
 const pool = new Pool({
   user: process.env.POSTGRES_USER,

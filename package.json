@@ -3,15 +3,22 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
+  "engines": {
+    "node": "18.16.0"
+  },
   "dependencies": {
+    "@prisma/client": "^4.14.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "firebase-admin": "^11.8.0",
     "helmet": "^6.2.0",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
-    "pg": "^8.10.0"
+    "pg": "^8.10.0",
+    "prisma": "^4.14.0"
   },
   "devDependencies": {
     "chai": "^4.3.7",
@@ -20,11 +27,11 @@
     "mocha": "^10.2.0"
   },
   "scripts": {
-    "start": "node .",
-    "test": "mocha --timeout 20000 --exit",
+    "start": "node -r dotenv/config .",
+    "start-server": "node -r dotenv/config .",
+    "test": "mocha -r dotenv/config --timeout 20000 --exit",
     "lint": "npx eslint src/",
     "lint-test": "npx eslint test/"
-
   },
   "keywords": [],
   "author": "",

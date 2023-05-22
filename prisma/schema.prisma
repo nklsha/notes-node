@@ -1,0 +1,32 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [uuid_ossp(map: "uuid-ossp")]
+}
+
+model note {
+  title        String?  @db.VarChar
+  description  String?  @db.VarChar
+  date_updated DateTime @default(now()) @db.Timestamp(6)
+  is_active    Boolean  @default(true)
+  date_created DateTime @default(now()) @db.Timestamp(6)
+  id           String   @id(map: "note_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId       String   @db.Uuid
+  users        profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model profile {
+  name         String   @db.VarChar
+  email        String   @db.VarChar
+  id           String   @id(map: "user_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  date_updated DateTime @default(now()) @db.Timestamp(6)
+  is_active    Boolean  @default(true)
+  date_created DateTime @default(now()) @db.Timestamp(6)
+  firebaseId   String   @unique(map: "user_firebaseId_key")
+  notes        note[]
+}
